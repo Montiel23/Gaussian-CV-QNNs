@@ -1,4 +1,4 @@
-#Continuous-variable Gaussian Quantum Neural Networks for Biomedical Image Classification
+# Continuous-variable Gaussian Quantum Neural Networks for Biomedical Image Classification
 
 This repository contains the code accompanying the paper:
 
