@@ -27,10 +27,25 @@ Generated figures and results are not tracked to keep the repository lightweight
 - PennyLane 0.29.1
 - PyTorch, numpy, scipy, scikit-learn
 
-## Reproducibility
+## Reproducibility notebooks
 Every notebook is tailored towards one of the evaluated datasets from MedMNIST, running with the functions from modules
 1. Run breastmnist, organamnist, pneumoniamnist notebooks.
 2. evaluate hypothesis testing using the saved logs and results using hypothesis-testing file.
+
+## Reproducibility script
+1. The file "medmnist-script.py" in the python-scripts directory is for conducting ablation study runs.
+2. When running this script, the following flags can be defined to conduct an experimental train, validation, and test run on a specific configuration of the proposed CV quantum neural network:
+ a. --data-flag: (organamnist, breastmnist, pneumoniamnist)
+ b. --n_components: (integer)
+ c. --n_qumodes: (integer)
+ d. --depth : (integer)
+ e. --epochs: (integer)
+ f. --batch-size: (integer)
+ g. --train-fraction: (decimal between 0 and 1)
+ h. --lr: (small floating number)
+ i. --seed: (integer)
+ j. --deterministic
+ k. --save-prefix: (name for save file)
 
 ## Computational notes
 CV models are simulated using Gaussian backends from PennyLane.
