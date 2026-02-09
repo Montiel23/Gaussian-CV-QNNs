@@ -70,7 +70,7 @@ def cv_qcnn(inputs, weights, n_qumodes=4):
 
     return [qml.expval(qml.X(wires=i)) for i in range(n_qumodes)]
 
-def get_cv_qcnn_qnode(n_qumodes, dev_name="default.gaussian"):
+def get_cv_qcnn_qnode(n_qumodes, depth, dev_name="default.gaussian"):
     dev = qml.device(dev_name, wires=n_qumodes, shots=None)
     return qml.QNode(lambda inputs, weights: cv_qcnn(inputs, weights, n_qumodes), dev, interface="torch", diff_method="parameter-shift")
     # return qml.QNode(lambda inputs, weights: cv_qcnn(inputs, weights, n_qumodes), dev, interface="torch", diff_method="backprop")
@@ -96,12 +96,23 @@ class DVQuantumLinear(nn.Module):
 
 
 class QuantumLinear(nn.Module):
-    def __init__(self, n_qumodes=4, n_classes=2):
+    def __init__(self, n_qumodes=4, n_classes=2, depth=2):
         super().__init__()
 
-        weight_shapes = {"weights": (2, n_qumodes, 4)}
+        self.n_qumodes = n_qumodes
+        self.n_classes = n_classes
+        self.depth = depth
 
-        qnode = get_cv_qcnn_qnode(n_qumodes)
+        # weight_shapes = {"weights": (2, n_qumodes, 4)}
+        weight_shapes = {"weights": (depth, n_qumodes, 4)}
+        # weight_shapes = {"weights": (depth, n_qumodes, n_qumodes)}
+
+        # self.n_qumodes = n_qumodes
+        # self.n_classes = n_classes 
+        # self.depth = depth
+
+        # qnode = get_cv_qcnn_qnode(n_qumodes)
+        qnode = get_cv_qcnn_qnode(n_qumodes, depth, dev_name="default.gaussian")
 
         self.quantum = TorchLayer(qnode, weight_shapes)
 
@@ -187,6 +198,27 @@ def gradcam_model(model, input_tensor, quantum=False, class_idx=None):
 
     # return cam.detach().cpu(), outputs.detach().cpu(), class_idx.detach().cpu()
     return cam.detach().cpu(), probs.detach().cpu(), class_idx.detach().cpu()
+
+
+def evaluate_calibration(model, loader, device, n_bins=15):
+    model.eval()
+    all_logits = []
+    all_y = []
+
+    for xb, yb in loader:
+        xb = xb.to(device)
+        logits = model(xb)
+        all_logits.append(logits.detach().cpu())
+        all_y.append(yb.cpu())
+
+    logits = torch.cat(all_logits)
+    y_true = torch.cat(all_y).numpy()
+    y_prob = torch.softmax(logits, dim=1).numpy()
+
+    return {
+        "ece": compute_ece(y_true, y_prob, n_bins),
+        "brier": brier_score(y_true, y_prob)
+    }
 
 
 def brier_score(y_true, y_prob):

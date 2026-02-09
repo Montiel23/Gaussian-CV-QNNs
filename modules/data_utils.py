@@ -70,43 +70,6 @@ def load_data(data_flag, batch_size=32, train_fraction=0.2, val_fraction=1.0, te
     return train_loader, train_dataset, val_loader, val_dataset, test_loader, test_dataset
 
 
-
-# def load_data(batch_size=32, train_fraction=0.2, val_fraction=1.0, test_fraction=1.0):
-#     data_flag = "pneumoniamnist"
-#     info = INFO[data_flag]
-#     transform = transforms.Compose([
-#         transforms.Resize((28, 28)),
-#         transforms.ToTensor()
-#     ])
-
-#     train_dataset = PneumoniaMNIST(split='train', transform=transform, download=True)
-#     val_dataset = PneumoniaMNIST(split='val', transform=transform, download=True)
-#     test_dataset = PneumoniaMNIST(split='test', transform=transform, download=True)
-
-
-#     if train_fraction < 1.0:
-#         n_train = int(len(train_dataset) * train_fraction)
-#         indices = np.random.choice(len(train_dataset), n_train, replace=False)
-#         train_dataset = Subset(train_dataset, indices)
-
-#     if val_fraction < 1.0:
-#         n_val = int(len(val_dataset) * val_fraction)
-#         indices = np.random.choice(len(val_dataset), n_val, replace=False)
-#         val_dataset = Subset(val_dataset, indices)
-
-#     if test_fraction < 1.0:
-#         n_test = int(len(test_dataset) * test_fraction)
-#         indices = np.random.choice(len(test_dataset), n_test, replace=False)
-#         test_dataset = Subset(test_dataset, indices)
-    
-    
-#     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-#     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
-#     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
-
-#     return train_loader, train_dataset, val_loader, val_dataset, test_loader, test_dataset
-
-
 def extract_xy_from_loader(dataloader):
     x_all = []
     y_all = []
@@ -137,13 +100,21 @@ def data_scaler(train_encoded_data, val_encoded_data, test_encoded_data, save_da
     return train_tensor_data, val_tensor_data, test_tensor_data
 
 
-def dataset_dataloaders(x_tensor, y_tensor, train=True):
+def dataset_dataloaders(x_tensor, y_tensor, train=True, batch_size=32, shuffle=False, seed=None):
+    
     dataset = TensorDataset(x_tensor, y_tensor)
+
+    if seed is not None:
+        generator = torch.Generator()
+        generator.manual_seed(seed)
+    
     if train:
-        loader = DataLoader(dataset, batch_size=32, shuffle=True)
+        # loader = DataLoader(dataset, batch_size=32, shuffle=True)
+        loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, generator=generator)
 
     else:
-        loader = DataLoader(dataset, batch_size=32, shuffle=False)
+        # loader = DataLoader(dataset, batch_size=32, shuffle=False)
+        loader = DataLoader(dataset, batch_size=batch_size, shuffle=False, generator=generator)
 
     return dataset, loader
 
