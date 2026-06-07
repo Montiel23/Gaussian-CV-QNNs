@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+
+# License-identifier: MIT
+# Copyright (c) 2025 Daniel Alejandro Lopez Montiel
+
 """
 Run CV quantum model pipeline for BreastMNIST (single-run training + evaluation).
 
