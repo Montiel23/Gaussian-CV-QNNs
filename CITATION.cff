@@ -1,1 +1,20 @@
-Lopez-Montiel D A, Montiel-Ross O H and Lopez-Montiel M A 2026 Continuous-variable Gaussian Quantum Neural Networks for Biomedical Image Classification
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Lopez Montiel"
+  given-names: "Daniel Alejandro"
+  orcid: "https://orcid.org/0000-0002-3546-6762"
+- family-names: "Montiel Ross"
+  given-names: "Oscar Humberto"
+  orcid: "https://orcid.org/0000-0002-7060-9204"
+- family-names: "Castillo Lopez"
+  given-names: "Oscar"
+  orcid: "https://orcid.org/0000-0002-7385-5689"
+- family-names: "Lopez Montiel"
+  given-names: "Miguel Angel"
+  orcid: "https://orcid.org/0000-0001-5367-9801"
+title: "Gaussian-CV-QNNs"
+version: 1.0.0
+doi: 10.5281/zenodo.1234
+date-released: 2026-06-26
+url: "https://github.com/Montiel23/Gaussian-CV-QNNs"
