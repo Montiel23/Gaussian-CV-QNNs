@@ -5,8 +5,8 @@ This repository contains the code accompanying the paper:
 Gaussian Continuous-Variable Quantum Neural Networks for MedMNIST Classification
 
 Daniel Alejandro Lopez, Oscar Montiel, Oscar Castillo, Miguel Lopez-Montiel
-Institute of Physics - Quantum Science and Technology / arXiv: 	
-https://doi.org/10.48550/arXiv.2511.02051
+Institute of Physics - Physica Scripta: https://doi.org/10.1088/1402-4896/ae7bd1
+arXiv: https://doi.org/10.48550/arXiv.2511.02051
 
 ## Scope
 
@@ -55,4 +55,4 @@ Parameter-shift is used for gradient evaluation for both DV and CV models.
 This project is licensed unser the MIT license.
 
 ## Citation
-If you use this code, please cite the accompanying paper.
+If you use this code, please cite the accompanying paper and use the corresponding indications in the CITATION.cff file.
